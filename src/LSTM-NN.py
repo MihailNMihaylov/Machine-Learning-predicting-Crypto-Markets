@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 #Read data set from .csv file
-df = pd.read_csv('BTCPriceDataSet.csv')
+df = pd.read_csv('DataSets/BTCPriceUSD.csv')
 
 price = df[['Close']]
 
@@ -11,7 +11,7 @@ price = df[['Close']]
 plt.figure(figsize = (15,9))
 plt.plot(price)
 plt.xticks(range(0, df.shape[0], 50), df['Date'].loc[::50], rotation=45)
-plt.title('BTC price')
+plt.title('BTC price USD')
 plt.xlabel('Date')
 plt.ylabel('Price')
 
