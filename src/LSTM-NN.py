@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 #Read data set from .csv file
-df = pd.read_csv('DataSets/BTCPriceUSD.csv')
+df = pd.read_csv('DataSets/BTC_Price_USD.csv')
 
 price = df[['Close']]
 
