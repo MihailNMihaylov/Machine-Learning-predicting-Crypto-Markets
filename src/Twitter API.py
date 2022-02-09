@@ -14,10 +14,16 @@ consumer_secret= 'PGYgR03BSZb0KC3A9zD4K5HkBiFewyXiHoi3vHoCItfLygQA7T'
 access_token= '872378624682459136-zXD0nW4ZmPZv0EHeAxRQwzG93iFH8Ch'
 access_token_secret= 'GA3bevXTwjAeRWz9LQFeWEoWHl2J95NIL2NbZLRZ3o1BN'
 
-#Creating API object
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
+def authenticateUser():
+    # Creating API object
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+
+    return api
+
+#API object
+api = authenticateUser()
 
 #Get Tweets from home page
 def get_tweets_homepage():
