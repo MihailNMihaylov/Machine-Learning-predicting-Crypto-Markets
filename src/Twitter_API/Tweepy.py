@@ -36,11 +36,11 @@ def get_tweets_homepage():
 #Give name of twitter account by using "@"
 #Example "@binance" or "@billgates"
 #IMPORTANT:  All letter must be lowercase
-#This function retrieves all tweets from a user and saves them into allTweetsFile.csv with important information about the tweet.
+#This function retrieves all tweets from a user and saves them into Tweets_Data_Tweepy.csv with important information about the tweet.
 def get_tweets_from_account(accName):
     total_tweets_collected = 0
-    #Open or create if doesn't exist allTweetsFile.csv
-    csvFile = open('allTweetsFile.csv', 'a')
+    #Open or create if doesn't exist Tweets_Data_Tweepy.csv
+    csvFile = open('../DataSets/Tweets_Data_Tweepy.csv', 'a')
     csvWriter = csv.writer(csvFile)
 
     #Retrieve maximum amount of tweets from timeline of account

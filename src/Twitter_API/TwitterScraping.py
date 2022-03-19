@@ -9,13 +9,13 @@ import csv
 
 
 #Set number for maximum tweets
-maxTweets = 300
+maxTweets = 45000
 
-#Open (or create if doesn't exist) "GetOldTweets3_result.csv" file to save retrieved tweets by Id, Date and Text
-csvFile = open('GetOldTweets3_result.csv', 'a', newline='', encoding='utf8')
+#Open (or create if doesn't exist) "Tweets_Data_Scraping.csv" file to save retrieved tweets by Id, Date and Text
+csvFile = open('../src/DataSets/Tweets_Data_Scraping.csv', 'a', newline='', encoding='utf8')
 
 csvWriter = csv.writer(csvFile)
-csvWriter.writerow(['id', 'date', 'tweet'])
+csvWriter.writerow(['username', 'date', 'tweet'])
 
 #Get tweets from User since a specific date
 #write username as the first parameter without "@"
@@ -42,21 +42,34 @@ def Get_tweets_by_user(username, sinceDate):
         if firstDate == tweetDate:
             sameDayTweets = sameDayTweets + 1
 
-            #Max tweets per day - 3
-            if sameDayTweets > 2:
+            #Max tweets per day - 2
+            if sameDayTweets > 1:
                 continue
 
         #if max number of tweets is reached break the loop and stop retrieving
         if i > maxTweets:
             break
 
-        csvWriter.writerow([tweet.id, tweetDate, tweet.content])
-        firstDate = tweetDate
-    csvFile.close()
+        #Keep content of tweets on the same line
+        tweet.content = tweet.content.replace('\n', ', ')
 
+        csvWriter.writerow([tweet.username, tweetDate, tweet.content])
+        firstDate = tweetDate
+    return csvFile
+
+
+
+
+
+
+
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#Testing the function (NOT PART OF THE IMPLEMENTATION
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #Call the function for all users that have influence on the price or have relevant information about the price
-Get_tweets_by_user("coindesk", "2014-01-01")
+
+#Get_tweets_by_user("coindesk", "2014-01-01")
 #Get_tweets_by_user("coindeskmarkets", "2018-01-01")
 #Get_tweets_by_user("BTCTN", "2015-08-01")
 #Get_tweets_by_user("btc_archive", "2018-04-01")

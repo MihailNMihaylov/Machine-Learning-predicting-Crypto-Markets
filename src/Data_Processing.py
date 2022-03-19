@@ -23,5 +23,5 @@ def visualiseDataInPlot():
 
 #Preprocess Data
 def removeNullValues():
-    #Remove entire row from dataset if there is a null value
+    #Remove entire row from dataset if there are any null value
     df.dropna(inplace = True)
