@@ -15,7 +15,7 @@ maxTweets = 45000
 csvFile = open('../src/DataSets/Tweets_Data_Scraping.csv', 'a', newline='', encoding='utf8')
 
 csvWriter = csv.writer(csvFile)
-csvWriter.writerow(['username', 'date', 'tweet'])
+csvWriter.writerow([ 'date', 'tweet', 'sentimentScore'])
 
 #Get tweets from User since a specific date
 #write username as the first parameter without "@"
@@ -53,7 +53,7 @@ def Get_tweets_by_user(username, sinceDate):
         #Keep content of tweets on the same line
         tweet.content = tweet.content.replace('\n', ', ')
 
-        csvWriter.writerow([tweet.username, tweetDate, tweet.content])
+        csvWriter.writerow([tweetDate, tweet.content, "0"])
         firstDate = tweetDate
     return csvFile
 

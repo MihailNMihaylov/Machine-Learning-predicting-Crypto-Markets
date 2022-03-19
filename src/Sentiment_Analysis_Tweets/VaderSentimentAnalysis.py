@@ -16,9 +16,10 @@ def sentimentResultVader(sentenceToAnalyze):
 
     sentimentScore = vaderObj.polarity_scores(sentenceToAnalyze)
 
-    print(sentimentScore)
+    return sentimentScore['compound']
 
 
 
 #Sample tweets to test the accuracy of the sentiment analysis of Vader
-sentimentResultVader("Employees are asking to be #PaidInBitcoin, and we listened. With our new Bitcoin Savings Plan, companies can now offer an innovative compensation perk for employees to securely buy, sell, and hold #Bitcoin without incurring any transaction or storage fees. https://bit.ly/3IRnv8g")
+print(sentimentResultVader("Employees are asking to be #PaidInBitcoin, and we listened. With our new Bitcoin Savings Plan, companies can now offer an innovative compensation perk for employees to securely buy, sell, and hold #Bitcoin without incurring any transaction or storage fees. https://bit.ly/3IRnv8g"))
+print(sentimentResultVader("This is the worst day"))
