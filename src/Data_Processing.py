@@ -3,6 +3,8 @@ import csv
 from src.Sentiment_Analysis_Tweets.VaderSentimentAnalysis import *
 import pandas as pd
 from matplotlib import pyplot as plt
+from dateutil.parser import parse
+from collections import OrderedDict
 import numpy as np
 
 #Read data set from .csv file
@@ -28,11 +30,15 @@ def removeNullValuesBitcoin():
     #Remove entire row from dataset if there are any null value
     df.dropna(inplace = True)
 
-#Method for calculating and appending the sentiment compound score of each Tweet
-#Updates DataFrame with Date, TweetContent, CompoundScore
+#Method for calculating the sentiment score of each tweet
+#Saves the result into SemtimentResult.csv file
+#Each day has a sentiment score for all the tweets on that day
 def CalculateSentimentScoreOfTweets():
 
-    #Open the tweets file
+    #Empty dictonary that holds the sentiment results for each day
+    dictSentimentScore = {}
+
+    #Open the tweets file and convert it into Numpy Array
     data = pd.read_csv('../src/DataSets/Tweets_Data_Scraping.csv')
     array = data.to_numpy()
 
@@ -41,17 +47,22 @@ def CalculateSentimentScoreOfTweets():
 
         #Perform sentiment analysis on each tweet
         sentimentCompoundScore = sentimentResultVader(row[1])
-        #Update the score
-        row[2] = sentimentCompoundScore
 
-    #Update the Tweets_Data_Scraping.csv file
-    originalDF = open('../src/DataSets/Tweets_Data_Scraping.csv', 'r+')
-    originalDF.truncate(0)
-    originalDF.close()
+        if row[0] in dictSentimentScore.keys():
+            dictSentimentScore[row[0]].append(sentimentCompoundScore)
+        else:
+            dictSentimentScore[row[0]] = []
+            dictSentimentScore[row[0]].append(sentimentCompoundScore)
 
-    df = pd.DataFrame(array, columns=['Date', 'TweetContent', 'SentimentScore'])
-    df.to_csv('../src/DataSets/Tweets_Data_Scraping.csv', index=False)
+    #Calculate average sentiment score for each day
+    for row in dictSentimentScore:
+        avgScore = sum(dictSentimentScore[row]) / len(dictSentimentScore[row])
+        dictSentimentScore[row] = avgScore
 
+    #Order by date
+    orderedDictSentimentScore = OrderedDict(sorted(dictSentimentScore.items()))
 
-
-
+    #Save result into SentimentResult.csv file
+    with open('../src/DataSets/SentimentResult.csv', 'w') as f:
+        for key in orderedDictSentimentScore.keys():
+            f.write("%s,%s\n" % (key, "{:.4f}".format(float(orderedDictSentimentScore[key]))))

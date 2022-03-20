@@ -17,5 +17,9 @@ def sentimentResultTextBlob(sentence):
     print(sentimentScore)
 
 
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#Testing the function (CODE BELOW IS NOT PART OF THE IMPLEMENTATION)
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 #Sample tweets to test the accuracy of the sentiment analysis of TextBlob
-sentimentResultTextBlob("Employees are asking to be #PaidInBitcoin, and we listened. With our new Bitcoin Savings Plan, companies can now offer an innovative compensation perk for employees to securely buy, sell, and hold #Bitcoin without incurring any transaction or storage fees. https://bit.ly/3IRnv8g")
+#sentimentResultTextBlob("Employees are asking to be #PaidInBitcoin, and we listened. With our new Bitcoin Savings Plan, companies can now offer an innovative compensation perk for employees to securely buy, sell, and hold #Bitcoin without incurring any transaction or storage fees. https://bit.ly/3IRnv8g")

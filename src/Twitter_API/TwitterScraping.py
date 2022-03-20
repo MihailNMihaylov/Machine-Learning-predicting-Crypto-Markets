@@ -15,7 +15,7 @@ maxTweets = 45000
 csvFile = open('../src/DataSets/Tweets_Data_Scraping.csv', 'a', newline='', encoding='utf8')
 
 csvWriter = csv.writer(csvFile)
-csvWriter.writerow([ 'date', 'tweet', 'sentimentScore'])
+csvWriter.writerow([ 'Date', 'Tweet'])
 
 #Get tweets from User since a specific date
 #write username as the first parameter without "@"
@@ -53,7 +53,7 @@ def Get_tweets_by_user(username, sinceDate):
         #Keep content of tweets on the same line
         tweet.content = tweet.content.replace('\n', ', ')
 
-        csvWriter.writerow([tweetDate, tweet.content, "0"])
+        csvWriter.writerow([tweetDate, tweet.content])
         firstDate = tweetDate
     return csvFile
 
@@ -64,7 +64,7 @@ def Get_tweets_by_user(username, sinceDate):
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#Testing the function (NOT PART OF THE IMPLEMENTATION
+#Testing the function (CODE BELOW IS NOT PART OF THE IMPLEMENTATION)
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #Call the function for all users that have influence on the price or have relevant information about the price
