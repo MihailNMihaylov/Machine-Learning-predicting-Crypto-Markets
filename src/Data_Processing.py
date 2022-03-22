@@ -8,27 +8,26 @@ from collections import OrderedDict
 import numpy as np
 
 #Read data set from .csv file
-df = pd.read_csv('DataSets/BTC_Price_USD.csv')
+#df = pd.read_csv('DataSets/BTC_Price_USD.csv')
 
 
 #Visualize data using plot / X axis is Date and Y axis is Price in USD
 def visualiseBitcoinDataInPlot():
 
-    price = df[['Close']]
+    #price = df[['Close']]
 
-    plt.figure(figsize = (15,9))
-    plt.plot(price)
-    plt.xticks(range(0, df.shape[0], 50), df['Date'].loc[::50], rotation=45)
-    plt.title('BTC price USD')
-    plt.xlabel('Date')
-    plt.ylabel('Price')
+    #plt.figure(figsize = (15,9))
+    #plt.plot(price)
+    #plt.xticks(range(0, df.shape[0], 50), df['Date'].loc[::50], rotation=45)
+    #plt.title('BTC price USD')
+    #plt.xlabel('Date')
+    #lt.ylabel('Price')
 
     plt.show()
 
 #Preprocess Data
-def removeNullValuesBitcoin():
-    #Remove entire row from dataset if there are any null value
-    df.dropna(inplace = True)
+#def removeNullValuesBitcoin():
+    #df.dropna(inplace = True)
 
 #Method for calculating the sentiment score of each tweet
 #Saves the result into SemtimentResult.csv file
@@ -63,6 +62,15 @@ def CalculateSentimentScoreOfTweets():
     orderedDictSentimentScore = OrderedDict(sorted(dictSentimentScore.items()))
 
     #Save result into SentimentResult.csv file
-    with open('../src/DataSets/SentimentResult.csv', 'w') as f:
+    with open('../src/DataSets/SentimentResult.csv', 'a') as f:
+        f.write('Date,SentimentScore\n')
         for key in orderedDictSentimentScore.keys():
             f.write("%s,%s\n" % (key, "{:.4f}".format(float(orderedDictSentimentScore[key]))))
+        f.close()
+
+def combineSentimentAndBTCStats():
+    btc_stats = pd.read_csv('../src/DataSets/DownloadBTC-USD.csv')
+    twitterSentimentResult = pd.read_csv('../src/DataSets/SentimentResult.csv')
+
+    combinedDF = pd.concat([btc_stats, twitterSentimentResult['SentimentScore']], axis=1, join='inner')
+    combinedDF.to_csv("../src/DataSets/CombinedResults.csv", index=False)
