@@ -2,32 +2,27 @@
 import csv
 from src.Sentiment_Analysis_Tweets.VaderSentimentAnalysis import *
 import pandas as pd
-from matplotlib import pyplot as plt
 from dateutil.parser import parse
 from collections import OrderedDict
 import numpy as np
-
-#Read data set from .csv file
-#df = pd.read_csv('DataSets/BTC_Price_USD.csv')
-
-
-#Visualize data using plot / X axis is Date and Y axis is Price in USD
-def visualiseBitcoinDataInPlot():
-
-    #price = df[['Close']]
-
-    #plt.figure(figsize = (15,9))
-    #plt.plot(price)
-    #plt.xticks(range(0, df.shape[0], 50), df['Date'].loc[::50], rotation=45)
-    #plt.title('BTC price USD')
-    #plt.xlabel('Date')
-    #lt.ylabel('Price')
-
-    plt.show()
+from sklearn.preprocessing import MinMaxScaler
 
 #Preprocess Data
-#def removeNullValuesBitcoin():
-    #df.dropna(inplace = True)
+def preprocessDataset(df):
+
+    #Remove rows with empty values
+    df.dropna(inplace = True)
+    df = df.drop(['Open', 'Dividends'], axis='columns')
+
+    #Convert Date column from object into DateTime
+    df = df.astype({'Date': 'datetime64'})
+
+    #Return only Date and Closing price
+    df = df.groupby('Date')['Close'].mean()
+
+    #Return Type : Series
+    return df
+
 
 #Method for calculating the sentiment score of each tweet
 #Saves the result into SemtimentResult.csv file
