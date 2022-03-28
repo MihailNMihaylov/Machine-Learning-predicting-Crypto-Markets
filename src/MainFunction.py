@@ -1,5 +1,5 @@
 #This is the main file where everything is going to start
-from src.Data_Processing import *
+from src.Data_preprocessing import *
 from src.Twitter_API.TwitterScraping import *
 from src.BTC_Stats_Retriever.Bitcoin_Market_download import *
 from datetime import datetime
@@ -8,11 +8,6 @@ from datetime import datetime
 def get_BTC_Dataset():
     downloadBitcoinStats()
 
-#Preprocessing of BTC dataset
-def preprocess_BTC_Dataset():
-    #removeNullValuesBitcoin()
-    visualiseBitcoinDataInPlot()
-
 #Automatically retrieve tweets from accounts and save them into Tweets_Data_Scrapping.csv
 def get_Tweets():
 
@@ -20,7 +15,7 @@ def get_Tweets():
     file = None
     for username in listOfUsersnames:
         print(username)
-        file = Get_tweets_by_user(username, "2017-03-22")
+        file = Get_tweets_by_user(username, "2017-03-28")
 
     file.close()
     print('File closed!')

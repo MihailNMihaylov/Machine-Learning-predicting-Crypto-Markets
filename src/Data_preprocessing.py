@@ -2,9 +2,7 @@
 import csv
 from src.Sentiment_Analysis_Tweets.VaderSentimentAnalysis import *
 import pandas as pd
-from dateutil.parser import parse
 from collections import OrderedDict
-import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
 #Preprocess Data

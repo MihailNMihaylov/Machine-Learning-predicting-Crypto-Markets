@@ -1,14 +1,16 @@
 #Import necessary packages and libraries
 import numpy as np
-import pandas as pd
 import subprocess
 import sys
-from src.Data_Processing import *
+from src.Data_preprocessing import preprocessDataset, MinMaxScaler, pd
 #subprocess.check_call([sys.executable, "-m", "pip", "install", "matplotlib"])
 #subprocess.check_call([sys.executable, "-m", "pip", "install", "seaborn"])
 import matplotlib.pyplot as plt
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, LSTM
+
+
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense, Dropout, LSTM
+from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 
 dataset = pd.read_csv('../../src/DataSets/CombinedResults.csv')
 price = dataset[['Close']]
@@ -58,13 +60,31 @@ testX, testY = dataset_prep_lstm(test_Scaled)
 trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1 ))
 
-
+#Create/ Configure network
 model = Sequential()
 
-model.add(LSTM(units=128, activation='relu', retuen_sequence = True, input_shape = (trainX.shape[1], trainX.shape[2])))
+model.add(LSTM(units=128, activation='relu', input_shape = (trainX.shape[1], trainX.shape[2]), return_sequences=True))
 model.add(Dropout(0.2))
 model.add(LSTM(units=64, input_shape= (trainX.shape[1], trainX.shape[2])))
 model.add(Dropout(0.2))
 model.add(Dense(units=1))
 
-print(model.summary())
+#Compile the model
+model.compile(optimizer='adam', loss='mean_squared_error')
+
+savedModel = "model.hdf5"
+
+#Configuration settings of the model
+checkpoint = ModelCheckpoint(filepath=savedModel, monitor='loss', verbose=1, save_best_only=True, mode='min')
+#earlystopping = EarlyStopping(monitor='val_loss', patience = 5, restore_best_weights=True)
+#callbacks = [checkpoint, earlystopping]
+
+#Fit/Compile the model
+history = model.fit(trainX, trainY, batch_size=32, epochs=100, verbose=1, shuffle=False, validation_data=(testX, testY), callbacks= checkpoint)
+
+#Plot loss of training and testing dataset
+plt.figure(figsize=(16,7))
+plt.plot(history.history['loss'], label= 'train')
+plt.plot(history.history['val_loss'], label= 'test')
+plt.legend()
+plt.show()

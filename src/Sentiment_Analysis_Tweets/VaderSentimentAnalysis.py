@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 #Installing textblob library if missing
-subprocess.check_call([sys.executable, "-m", "pip", "install", "vaderSentiment"])
+#ubprocess.check_call([sys.executable, "-m", "pip", "install", "vaderSentiment"])
 
 #Importing Vader and TextBlob
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
