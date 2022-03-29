@@ -38,10 +38,12 @@ test_Df = processedDf[len(processedDf) - predictionDays:].values.reshape(-1,1)
 
 
 #Rescale Dataset
-train_Scaled = MinMaxScaler(feature_range=(0,10)).fit_transform(train_Df)
-test_Scaled = MinMaxScaler(feature_range=(0,10)).fit_transform(test_Df)
+train_Scaler = MinMaxScaler(feature_range=(0,10))
+train_Scaled = train_Scaler.fit_transform(train_Df)
+test_Scaler = MinMaxScaler(feature_range=(0,10))
+test_Scaled = test_Scaler.fit_transform(test_Df)
 
-#ref https://github.com/rohan-paul/MachineLearning-DeepLearning-Code-for-my-YouTube-Channel/blob/master/Finance_Stock_Crypto_Trading/Bitcoin_Price_Prediction_with_LSTM.ipynb
+#ref https://github.com/rohan-paul/MachineLearning-D)eepLearning-Code-for-my-YouTube-Channel/blob/master/Finance_Stock_Crypto_Trading/Bitcoin_Price_Prediction_with_LSTM.ipynb
 def dataset_prep_lstm(df, look_back=5):
 
     dataX, dataY = [], []
@@ -86,5 +88,17 @@ history = model.fit(trainX, trainY, batch_size=32, epochs=100, verbose=1, shuffl
 plt.figure(figsize=(16,7))
 plt.plot(history.history['loss'], label= 'train')
 plt.plot(history.history['val_loss'], label= 'test')
+plt.legend()
+plt.show()
+
+predictedData = model.predict(testX)
+predictedData = test_Scaler.inverse_transform(predictedData.reshape(-1, 1))
+
+actualTestData = test_Scaler.inverse_transform(testY.reshape((-1, 1)))
+
+
+plt.figure(figsize=(16,7))
+plt.plot(predictedData, 'r', marker='.', label='Predicted Data')
+plt.plot(actualTestData, marker='.', label = 'Actual Data')
 plt.legend()
 plt.show()
