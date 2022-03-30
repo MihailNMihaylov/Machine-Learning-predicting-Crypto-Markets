@@ -84,7 +84,7 @@ checkpoint = ModelCheckpoint(filepath=savedModel, monitor='loss', verbose=1, sav
 #callbacks = [checkpoint, earlystopping]
 
 #Fit/Compile the model
-history = model.fit(trainX, trainY, batch_size=32, epochs=200, verbose=1, shuffle=False, validation_data=(testX, testY), callbacks= checkpoint)
+history = model.fit(trainX, trainY, batch_size=32, epochs=300, verbose=1, shuffle=False, validation_data=(testX, testY), callbacks= checkpoint)
 
 #Plot loss of training and testing dataset
 plt.figure(figsize=(16,7))
@@ -129,4 +129,30 @@ print('Test RMSE: %.3f' % test_rmse)
 
 train_rmse = math.sqrt(mean_squared_error(actualBTCPrice, predictedBTCPrice))
 
-print('Test RMSE: %.3f' % train_rmse)
+print('Train RMSE: %.3f' % train_rmse)
+
+
+#Predict future 5 days BTC price
+daysPeriod = 5
+testX_last_days = testX[testX.shape[0] - daysPeriod:]
+
+predicted_future_days = []
+
+for i in range(5):
+    predicted = loadModel.predict(testX_last_days[i:i+1])
+    predicted = test_Scaler.inverse_transform(predicted.reshape(-1,1))
+
+    predicted_future_days.append(predicted)
+
+predicted_future_days = np.array(predicted_future_days)
+predicted_future_days = predicted_future_days.flatten()
+predictedData = predictedData.flatten()
+
+concat_predictions = np.concatenate((predictedData, predicted_future_days))
+
+plt.figure(figsize=(16,7))
+plt.title("Predicted future 5 days")
+plt.plot(concat_predictions, 'r', marker='.', label='Predicted 5 days')
+plt.plot(predictedData, marker='.', label = 'Actual Train Data')
+plt.legend()
+plt.show()
