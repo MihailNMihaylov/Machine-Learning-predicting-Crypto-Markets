@@ -7,7 +7,7 @@ from src.Data_preprocessing import preprocessDataset, MinMaxScaler, pd
 #subprocess.check_call([sys.executable, "-m", "pip", "install", "seaborn"])
 import matplotlib.pyplot as plt
 import math
-from sklearn.metrics import mean_squared_error, mean_absolute_error, explained_variance_score, r2_score
+from sklearn.metrics import mean_squared_error
 
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Dropout, LSTM
@@ -80,11 +80,9 @@ savedModel = "model.hdf5"
 
 #Configuration settings of the model
 checkpoint = ModelCheckpoint(filepath=savedModel, monitor='loss', verbose=1, save_best_only=True, mode='min')
-#earlystopping = EarlyStopping(monitor='val_loss', patience = 5, restore_best_weights=True)
-#callbacks = [checkpoint, earlystopping]
 
 #Fit/Compile the model
-history = model.fit(trainX, trainY, batch_size=32, epochs=300, verbose=1, shuffle=False, validation_data=(testX, testY), callbacks= checkpoint)
+history = model.fit(trainX, trainY, batch_size=32, epochs=100, verbose=1, shuffle=False, validation_data=(testX, testY), callbacks= checkpoint)
 
 #Plot loss of training and testing dataset
 plt.figure(figsize=(16,7))

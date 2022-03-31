@@ -6,20 +6,28 @@ from collections import OrderedDict
 from sklearn.preprocessing import MinMaxScaler
 
 #Preprocess Data
-def preprocessDataset(df):
+def preprocessDataset(df, sentimentIncluded = False):
+    # Remove rows with empty values
+    df.dropna(inplace=True)
+    df = df.drop(['Open', 'High', 'Low', 'Dividends', 'Volume', 'Stock Splits'], axis='columns')
 
-    #Remove rows with empty values
-    df.dropna(inplace = True)
-    df = df.drop(['Open', 'Dividends'], axis='columns')
-
-    #Convert Date column from object into DateTime
+    # Convert Date column from object into DateTime
     df = df.astype({'Date': 'datetime64'})
 
-    #Return only Date and Closing price
-    df = df.groupby('Date')['Close'].mean()
+    if sentimentIncluded:
+        df.set_index('Date', inplace=True)
+        cols = df.columns.tolist()
+        cols = cols[:-1] + cols[-1:]
+        df = df[cols]
+        return df
+    else:
+        # Return only Date and Closing price
+        df = df.groupby('Date')['Close'].mean()
 
-    #Return Type : Series
-    return df
+        # Return Type : Series
+        return df
+
+
 
 
 #Method for calculating the sentiment score of each tweet
