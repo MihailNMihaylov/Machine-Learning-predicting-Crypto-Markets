@@ -4,7 +4,10 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
 from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, Dropout, LSTM
+from tensorflow.python.keras.layers import Dense, LSTM
+
+from src.Neural_Network.CalculateRMSE import calculateRMSE
+from src.Neural_Network.PredictFuture5Days import predictFutureDays
 
 dataset = pd.read_csv("../../src/DataSets/CombinedResults.csv")
 
@@ -80,12 +83,35 @@ model.add(LSTM(100, input_shape=(trainX.shape[1], trainX.shape[2]), return_seque
 model.add(LSTM(100))
 model.add(Dense(1))
 model.compile(loss='mean_squared_error', optimizer='adam')
+
+
 history = model.fit(trainX, trainY, epochs=200, batch_size=100, validation_data=(testX, testY), verbose=1, shuffle=False)
 
 
 results = model.evaluate(testX, testY, batch_size=100)
 
-predictedData = model.predict(testX)
+predictedTestData = model.predict(testX)
+predictedTrainData = model.predict(trainX)
+
+predictedTestData = scaler.inverse_transform(predictedTestData.reshape(-1, 1))
+predictedTrainData = scaler.inverse_transform(predictedTrainData.reshape(-1, 1))
+
+#Evaluate model performance by using RMSE
+calculateRMSE(testY, predictedTestData, trainY, predictedTrainData)
+
+#Predict Future 5 days
+predictFutureDays(model, testX, scaler, predictedTestData)
+
+
+trainY = scaler.inverse_transform(trainY.reshape((-1, 1)))
+testY = scaler.inverse_transform(testY.reshape((-1, 1)))
+
+plt.figure(figsize=(16,7))
+plt.title("Predicted vs Actual Train data")
+plt.plot(predictedTrainData, 'r', marker='.', label='Predicted Train Data')
+plt.plot(trainY, marker='.', label = 'Actual Train Data')
+plt.legend()
+plt.show()
 
 plt.figure(figsize=(16,7))
 plt.title("Loss of train and test dataset")
@@ -95,8 +121,9 @@ plt.legend()
 plt.show()
 
 plt.figure(figsize=(16,7))
-plt.title("Actual vs Predicted dataset")
-plt.plot(predictedData, label= 'Actual')
+plt.title("Actual vs Predicted TEST dataset")
+plt.plot(predictedTestData, label= 'Actual')
 plt.plot(testY, label= 'Predicted')
 plt.legend()
 plt.show()
+

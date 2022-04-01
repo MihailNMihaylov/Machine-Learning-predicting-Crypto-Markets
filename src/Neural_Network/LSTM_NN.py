@@ -13,6 +13,8 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Dropout, LSTM
 from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.python.keras.models import load_model
+from src.Neural_Network.CalculateRMSE import calculateRMSE
+from src.Neural_Network.PredictFuture5Days import predictFutureDays
 
 dataset = pd.read_csv('../../src/DataSets/CombinedResults.csv')
 price = dataset[['Close']]
@@ -74,15 +76,11 @@ model.add(Dropout(0.2))
 model.add(Dense(units=1))
 
 #Compile the model
-model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
+model.compile(optimizer='adam', loss='mean_squared_error')
 
-savedModel = "model.hdf5"
-
-#Configuration settings of the model
-checkpoint = ModelCheckpoint(filepath=savedModel, monitor='loss', verbose=1, save_best_only=True, mode='min')
 
 #Fit/Compile the model
-history = model.fit(trainX, trainY, batch_size=32, epochs=100, verbose=1, shuffle=False, validation_data=(testX, testY), callbacks= checkpoint)
+history = model.fit(trainX, trainY, batch_size=32, epochs=100, verbose=1, shuffle=False, validation_data=(testX, testY))
 
 #Plot loss of training and testing dataset
 plt.figure(figsize=(16,7))
@@ -106,12 +104,16 @@ plt.plot(actualTestData, marker='.', label = 'Actual Data')
 plt.legend()
 plt.show()
 
-#Make a prediction by using the saved model
-loadModel = load_model(savedModel)
 
-predictedBTCPrice = loadModel.predict(trainX)
+predictedBTCPrice = model.predict(trainX)
 predictedBTCPrice = train_Scaler.inverse_transform(predictedBTCPrice.reshape(-1, 1))
 actualBTCPrice = train_Scaler.inverse_transform(trainY.reshape(-1, 1))
+
+
+
+#Evaluate model performance by using RMSE
+calculateRMSE(actualTestData, predictedData, actualBTCPrice, predictedBTCPrice)
+
 
 plt.figure(figsize=(16,7))
 plt.title("Predicted vs Actual Train data")
@@ -121,36 +123,5 @@ plt.legend()
 plt.show()
 
 
-#Evaluate model performance by using RMSE
-test_rmse = math.sqrt(mean_squared_error(actualTestData, predictedData))
-print('Test RMSE: %.3f' % test_rmse)
 
-train_rmse = math.sqrt(mean_squared_error(actualBTCPrice, predictedBTCPrice))
-
-print('Train RMSE: %.3f' % train_rmse)
-
-
-#Predict future 5 days BTC price
-daysPeriod = 5
-testX_last_days = testX[testX.shape[0] - daysPeriod:]
-
-predicted_future_days = []
-
-for i in range(5):
-    predicted = loadModel.predict(testX_last_days[i:i+1])
-    predicted = test_Scaler.inverse_transform(predicted.reshape(-1,1))
-
-    predicted_future_days.append(predicted)
-
-predicted_future_days = np.array(predicted_future_days)
-predicted_future_days = predicted_future_days.flatten()
-predictedData = predictedData.flatten()
-
-concat_predictions = np.concatenate((predictedData, predicted_future_days))
-
-plt.figure(figsize=(16,7))
-plt.title("Predicted future 5 days")
-plt.plot(concat_predictions, 'r', marker='.', label='Predicted 5 days')
-plt.plot(predictedData, marker='.', label = 'Actual Train Data')
-plt.legend()
-plt.show()
+predictFutureDays(model,testX, test_Scaler, predictedData)
