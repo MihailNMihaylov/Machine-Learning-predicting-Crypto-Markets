@@ -74,7 +74,7 @@ model.add(Dropout(0.2))
 model.add(Dense(units=1))
 
 #Compile the model
-model.compile(optimizer='adam', loss='mean_squared_error')
+model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
 
 savedModel = "model.hdf5"
 
