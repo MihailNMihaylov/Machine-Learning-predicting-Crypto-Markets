@@ -32,6 +32,9 @@ def visualizeDataset():
     plt.show()
 
 
+#Visualize BTC price information
+visualizeDataset()
+
 processedDf = preprocessDataset(dataset)
 
 
@@ -66,6 +69,7 @@ testX, testY = dataset_prep_lstm(test_Scaled)
 trainX = np.reshape(trainX, (trainX.shape[0], trainX.shape[1], 1))
 testX = np.reshape(testX, (testX.shape[0], testX.shape[1], 1 ))
 
+
 #Create/ Configure network
 model = Sequential()
 
@@ -80,13 +84,13 @@ model.compile(optimizer='adam', loss='mean_squared_error')
 
 
 #Fit/Compile the model
-history = model.fit(trainX, trainY, batch_size=32, epochs=100, verbose=1, shuffle=False, validation_data=(testX, testY))
+history = model.fit(trainX, trainY, batch_size=64, epochs=100, verbose=1, shuffle=False, validation_data=(testX, testY))
 
 #Plot loss of training and testing dataset
 plt.figure(figsize=(16,7))
-plt.title("Loss of train and test dataset")
-plt.plot(history.history['loss'], label= 'train')
-plt.plot(history.history['val_loss'], label= 'test')
+plt.title("Loss function of train and test dataset")
+plt.plot(history.history['loss'], label= 'Train loss')
+plt.plot(history.history['val_loss'], label= 'Test loss')
 plt.legend()
 plt.show()
 
@@ -96,32 +100,20 @@ predictedData = test_Scaler.inverse_transform(predictedData.reshape(-1, 1))
 
 actualTestData = test_Scaler.inverse_transform(testY.reshape((-1, 1)))
 
-
+#Plot the predicted vs actual data
 plt.figure(figsize=(16,7))
-plt.title('Predicted vs Actual Test data')
+plt.title('Actual data vs predicted data')
 plt.plot(predictedData, 'r', marker='.', label='Predicted Data')
 plt.plot(actualTestData, marker='.', label = 'Actual Data')
 plt.legend()
 plt.show()
 
-
 predictedBTCPrice = model.predict(trainX)
 predictedBTCPrice = train_Scaler.inverse_transform(predictedBTCPrice.reshape(-1, 1))
 actualBTCPrice = train_Scaler.inverse_transform(trainY.reshape(-1, 1))
 
-
-
 #Evaluate model performance by using RMSE
 calculateRMSE(actualTestData, predictedData, actualBTCPrice, predictedBTCPrice)
 
-
-plt.figure(figsize=(16,7))
-plt.title("Predicted vs Actual Train data")
-plt.plot(predictedBTCPrice, 'r', marker='.', label='Predicted Train Data')
-plt.plot(actualBTCPrice, marker='.', label = 'Actual Train Data')
-plt.legend()
-plt.show()
-
-
-
+#plot predicted future 5 days
 predictFutureDays(model,testX, test_Scaler, predictedData)

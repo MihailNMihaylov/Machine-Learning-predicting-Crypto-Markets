@@ -4,7 +4,7 @@ from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
 from tensorflow.python.keras.models import Sequential
-from tensorflow.python.keras.layers import Dense, LSTM
+from tensorflow.python.keras.layers import Dense, LSTM, Dropout
 
 from src.Neural_Network.CalculateRMSE import calculateRMSE
 from src.Neural_Network.PredictFuture5Days import predictFutureDays
@@ -21,23 +21,9 @@ def visualizeData():
     plt.ylabel('Price')
     plt.show()
 
-    # Plot Sentiment Score
-    plt.figure(figsize=(15, 9))
-    plt.plot(dataset['SentimentScore'])
-    plt.xticks(range(0, dataset.shape[0], 50), dataset['Date'].loc[::50], rotation=45)
-    plt.title('Sentiment Score')
-    plt.xlabel('Date')
-    plt.ylabel('SentimentS Score')
-    plt.show()
 
-    # Plot BTC price and Sentiment Score combined to see any correlation
-    fig, axs = plt.subplots(2)
-    fig.suptitle('BTC price compared to Sentiment Score')
-    axs[0].plot(dataset['Date'][1400:], dataset['Close'][1400:])
-    axs[0].set_title('BTC price in USD')
-    axs[1].plot(dataset['Date'][1400:], dataset['SentimentScore'][1400:])
-    axs[1].set_title('Sentiment Score')
-    plt.show()
+#Visualize BTC price data and daily sentiment score
+visualizeData()
 
 groupedDataset = dataset[['Close','SentimentScore']].groupby(dataset['Date']).mean()
 
@@ -79,13 +65,16 @@ trainX = np.reshape(trainX, (trainX.shape[0], 1, trainX.shape[1]))
 testX = np.reshape(testX, (testX.shape[0], 1, testX.shape[1]))
 
 model = Sequential()
-model.add(LSTM(100, input_shape=(trainX.shape[1], trainX.shape[2]), return_sequences=True))
-model.add(LSTM(100))
-model.add(Dense(1))
+model.add(LSTM(units=128, activation='relu', input_shape = (trainX.shape[1], trainX.shape[2]), return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(units=64, input_shape= (trainX.shape[1], trainX.shape[2])))
+model.add(Dropout(0.2))
+model.add(Dense(units=1))
+
 model.compile(loss='mean_squared_error', optimizer='adam')
 
 
-history = model.fit(trainX, trainY, epochs=200, batch_size=100, validation_data=(testX, testY), verbose=1, shuffle=False)
+history = model.fit(trainX, trainY, epochs=100, batch_size=64, validation_data=(testX, testY), verbose=1, shuffle=False)
 
 
 results = model.evaluate(testX, testY, batch_size=100)
@@ -99,31 +88,26 @@ predictedTrainData = scaler.inverse_transform(predictedTrainData.reshape(-1, 1))
 #Evaluate model performance by using RMSE
 calculateRMSE(testY, predictedTestData, trainY, predictedTrainData)
 
-#Predict Future 5 days
-predictFutureDays(model, testX, scaler, predictedTestData)
-
 
 trainY = scaler.inverse_transform(trainY.reshape((-1, 1)))
 testY = scaler.inverse_transform(testY.reshape((-1, 1)))
 
+#Plot Results
+#Plot loss function of train and test dataset
 plt.figure(figsize=(16,7))
-plt.title("Predicted vs Actual Train data")
-plt.plot(predictedTrainData, 'r', marker='.', label='Predicted Train Data')
-plt.plot(trainY, marker='.', label = 'Actual Train Data')
-plt.legend()
-plt.show()
-
-plt.figure(figsize=(16,7))
-plt.title("Loss of train and test dataset")
+plt.title("Loss function of train and test dataset")
 plt.plot(history.history['loss'], label= 'Train Loss')
 plt.plot(history.history['val_loss'], label= 'Test Loss')
 plt.legend()
 plt.show()
 
+#Plot actual vs predicted dataset
 plt.figure(figsize=(16,7))
-plt.title("Actual vs Predicted TEST dataset")
-plt.plot(predictedTestData, label= 'Actual')
-plt.plot(testY, label= 'Predicted')
+plt.title("Actual data vs predicted data")
+plt.plot(predictedTestData, label= 'Predicted data')
+plt.plot(testY, label= 'Actual data')
 plt.legend()
 plt.show()
 
+#Predict Future 5 days
+predictFutureDays(model, testX, scaler, predictedTestData)

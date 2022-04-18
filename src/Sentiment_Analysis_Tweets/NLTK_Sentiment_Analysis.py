@@ -103,8 +103,15 @@ classifier = NaiveBayesClassifier.train(train_data)
 print("Accuracy is:", classify.accuracy(classifier, test_data))
 
 
+
 #Evaluate model on text that it has never seen before
-custom_tweet = "Bitcoin price is expected to increase over the next couple of days because Tesla is now accepting Bitcoin as method of payment for their cars!"
+custom_tweet = "This is a sample textcreated for evaluation of both NLTK package and Vader library for sentiment analysis!! " \
+               "It consists of both positive and negative word. The amazing news are the fact that this way the test is going to be performed" \
+               "Under the same conditions using the same text" \
+               "This is amazing and price is expected to go up based on the new announcements, although it might seem awful to expected it to get any better" \
+               "Similarly the chinese government now approved Bitcoin and It is now an official curreny widely used by many world banks which increases the volume" \
+               "This might reflect into slow increase followed by a major decrease before the price remains stable."
+
 custom_tokens = remove_noise(word_tokenize(custom_tweet))
 
 print(classifier.classify(dict([token, True] for token in custom_tokens)))

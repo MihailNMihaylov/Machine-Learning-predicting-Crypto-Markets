@@ -16,7 +16,9 @@ def sentimentResultVader(sentenceToAnalyze):
 
     sentimentScore = vaderObj.polarity_scores(sentenceToAnalyze)
 
-    return sentimentScore['compound']
+    print("Compound sentiment score of Vader: {:.5f}".format(sentimentScore['compound']))
+
+
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -24,5 +26,10 @@ def sentimentResultVader(sentenceToAnalyze):
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #Sample tweets to test the accuracy of the sentiment analysis of Vader
-#print(sentimentResultVader("Employees are asking to be #PaidInBitcoin, and we listened. With our new Bitcoin Savings Plan, companies can now offer an innovative compensation perk for employees to securely buy, sell, and hold #Bitcoin without incurring any transaction or storage fees. https://bit.ly/3IRnv8g"))
-#print(sentimentResultVader("This is the worst day"))
+#print("Compound sentiment score of Vader: {:.5f}".format(
+#sentimentResultVader("This is a sample textcreated for evaluation of both Textblob  and Vader library for sentiment analysis!! "
+#                        "This message has mainly positive news to determine whether which one of the analyzers will perofrm better"
+#                        "Bitcoin is now accepted as a payment method in most supermarkets across the UK"
+#                        "China government approvs Bitcoin as an official currency"
+#                        "Crypto currencies and especially Bitcoin are widely used by world banks"
+#                        "Bitcoin tend to increase its volume double in size in the next two years ")))

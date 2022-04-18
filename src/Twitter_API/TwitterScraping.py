@@ -42,8 +42,8 @@ def Get_tweets_by_user(username, sinceDate):
         if firstDate == tweetDate:
             sameDayTweets = sameDayTweets + 1
 
-            #Max tweets per day - 2
-            if sameDayTweets > 1:
+            #Max tweets per day - 16
+            if sameDayTweets > 15:
                 continue
 
         #if max number of tweets is reached break the loop and stop retrieving

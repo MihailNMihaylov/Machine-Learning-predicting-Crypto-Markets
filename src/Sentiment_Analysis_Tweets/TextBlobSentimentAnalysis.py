@@ -13,8 +13,7 @@ from textblob import TextBlob
 def sentimentResultTextBlob(sentence):
 
     sentimentScore = TextBlob(sentence).sentiment
-
-    print(sentimentScore)
+    print("Compound sentiment score of Textblob: {:.5f}".format(sentimentScore[0]))
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -22,4 +21,9 @@ def sentimentResultTextBlob(sentence):
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 #Sample tweets to test the accuracy of the sentiment analysis of TextBlob
-#sentimentResultTextBlob("Employees are asking to be #PaidInBitcoin, and we listened. With our new Bitcoin Savings Plan, companies can now offer an innovative compensation perk for employees to securely buy, sell, and hold #Bitcoin without incurring any transaction or storage fees. https://bit.ly/3IRnv8g")
+#sentimentResultTextBlob("This is a sample textcreated for evaluation of both Textblob  and Vader library for sentiment analysis!! "
+                       # "This message has mainly positive news to determine whether which one of the analyzers will perofrm better"
+                        #"Bitcoin is now accepted as a payment method in most supermarkets across the UK"
+                        #"China government approvs Bitcoin as an official currency"
+                        #"Crypto currencies and especially Bitcoin are widely used by world banks"
+                        #"Bitcoin tend to increase its volume double in size in the next two years ")
