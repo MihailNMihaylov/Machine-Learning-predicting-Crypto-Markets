@@ -1,4 +1,5 @@
 #Install and Import libraries and packages necessary for text sentiment analysis
+
 import subprocess
 import sys
 subprocess.check_call([sys.executable, "-m", "pip", "install", "nltk"])
@@ -15,6 +16,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 
 
+#Code partially inspired by https://realpython.com/python-nltk-sentiment-analysis/
 
 #Packages and dataset for data normalization
 nltk.download('wordnet')

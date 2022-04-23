@@ -3,19 +3,16 @@ import numpy as np
 import subprocess
 import sys
 from src.Data_preprocessing import preprocessDataset, MinMaxScaler, pd
-#subprocess.check_call([sys.executable, "-m", "pip", "install", "matplotlib"])
-#subprocess.check_call([sys.executable, "-m", "pip", "install", "seaborn"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "matplotlib"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "seaborn"])
 import matplotlib.pyplot as plt
-import math
-from sklearn.metrics import mean_squared_error
 
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Dropout, LSTM
-from tensorflow.python.keras.callbacks import ModelCheckpoint, EarlyStopping
-from tensorflow.python.keras.models import load_model
 from src.Neural_Network.CalculateRMSE import calculateRMSE
 from src.Neural_Network.PredictFuture5Days import predictFutureDays
 
+#Load dataset
 dataset = pd.read_csv('../../src/DataSets/CombinedResults.csv')
 price = dataset[['Close']]
 
@@ -35,6 +32,7 @@ def visualizeDataset():
 #Visualize BTC price information
 visualizeDataset()
 
+#Call preprocessing function
 processedDf = preprocessDataset(dataset)
 
 
@@ -50,7 +48,7 @@ train_Scaled = train_Scaler.fit_transform(train_Df)
 test_Scaler = MinMaxScaler(feature_range=(0, 1))
 test_Scaled = test_Scaler.fit_transform(test_Df)
 
-#ref https://github.com/rohan-paul/MachineLearning-D)eepLearning-Code-for-my-YouTube-Channel/blob/master/Finance_Stock_Crypto_Trading/Bitcoin_Price_Prediction_with_LSTM.ipynb
+#Code partially inspired by Rohan Paul, “MachineLearning-DeepLearning-Code-For-My-Youtube-Channel”, 2022, Github Repository: https://github.com/rohan-paul/MachineLearning-DeepLearning-Code-for-my-YouTube-Channel
 def dataset_prep_lstm(df, look_back=5):
 
     dataX, dataY = [], []

@@ -1,3 +1,5 @@
+#Code inspired by [69]	Ran Aroussi, “Yfinance”, 2021, Github Repository: https://github.com/ranaroussi/yfinance
+
 #Import and download necessary libraries
 import subprocess
 import  sys

@@ -9,6 +9,7 @@ from tensorflow.python.keras.layers import Dense, LSTM, Dropout
 from src.Neural_Network.CalculateRMSE import calculateRMSE
 from src.Neural_Network.PredictFuture5Days import predictFutureDays
 
+#Load dataset
 dataset = pd.read_csv("../../src/DataSets/CombinedResults.csv")
 
 def visualizeData():
@@ -26,7 +27,6 @@ def visualizeData():
 visualizeData()
 
 groupedDataset = dataset[['Close','SentimentScore']].groupby(dataset['Date']).mean()
-
 
 price = groupedDataset['Close'].values.reshape(-1,1)
 sentiment = groupedDataset['SentimentScore'].values.reshape(-1,1)
@@ -85,12 +85,11 @@ predictedTrainData = model.predict(trainX)
 predictedTestData = scaler.inverse_transform(predictedTestData.reshape(-1, 1))
 predictedTrainData = scaler.inverse_transform(predictedTrainData.reshape(-1, 1))
 
-#Evaluate model performance by using RMSE
-calculateRMSE(testY, predictedTestData, trainY, predictedTrainData)
-
-
 trainY = scaler.inverse_transform(trainY.reshape((-1, 1)))
 testY = scaler.inverse_transform(testY.reshape((-1, 1)))
+
+
+
 
 #Plot Results
 #Plot loss function of train and test dataset
@@ -104,10 +103,13 @@ plt.show()
 #Plot actual vs predicted dataset
 plt.figure(figsize=(16,7))
 plt.title("Actual data vs predicted data")
-plt.plot(predictedTestData, label= 'Predicted data')
-plt.plot(testY, label= 'Actual data')
+plt.plot(predictedTestData,'r', marker='.',  label= 'Predicted data')
+plt.plot(testY, marker='.', label= 'Actual data')
 plt.legend()
 plt.show()
+
+#Evaluate model performance by using RMSE
+calculateRMSE(testY, predictedTestData, trainY, predictedTrainData)
 
 #Predict Future 5 days
 predictFutureDays(model, testX, scaler, predictedTestData)

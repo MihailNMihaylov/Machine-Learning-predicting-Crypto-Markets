@@ -1,9 +1,9 @@
 #Importing necessary libraries and packages
-import csv
 from src.Sentiment_Analysis_Tweets.VaderSentimentAnalysis import *
 import pandas as pd
 from collections import OrderedDict
-from sklearn.preprocessing import MinMaxScaler
+
+#Code adopted and improved to increasy overll performance
 
 #Preprocess Data
 def preprocessDataset(df, sentimentIncluded = False):

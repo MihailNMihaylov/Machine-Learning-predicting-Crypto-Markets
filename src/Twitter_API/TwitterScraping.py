@@ -17,6 +17,9 @@ csvFile = open('../src/DataSets/Tweets_Data_Scraping.csv', 'a', newline='', enco
 csvWriter = csv.writer(csvFile)
 csvWriter.writerow([ 'Date', 'Tweet'])
 
+#Code inspired by:
+#Hernandez-Suarez, A., Sanchez-Perez, G., Toscano-Medina, K., Martinez-Hernandez, V., Sanchez, V. and Perez-Meana, H., 1803. A web scraping methodology for bypassing Twitter API restrictions. arXiv.
+
 #Get tweets from User since a specific date
 #write username as the first parameter without "@"
 #Write date in format "yyyy-mm-dd"

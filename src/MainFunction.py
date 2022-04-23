@@ -1,3 +1,8 @@
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#Run this file to compile the system
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 #This is the main file where everything is going to start
 from src.Data_preprocessing import *
 from src.Twitter_API.TwitterScraping import *
@@ -49,8 +54,12 @@ def evaluateSentimentAnalyzers():
                             "Good news and bright future is ahead of the crypto world as many millionaires choose to invest their forture in crypto"
                             "as it has the potential to double their investment in shoe time ")
 
-evaluateSentimentAnalyzers()
-#get_BTC_Dataset()
-#get_Tweets()
-#CalculateSentimentScoreOfTweets()
-#combineSentimentAndBTCStats()
+def Run():
+    evaluateSentimentAnalyzers()
+    get_BTC_Dataset()
+    get_Tweets()
+    CalculateSentimentScoreOfTweets()
+    combineSentimentAndBTCStats()
+
+#Function that loads and runs everything
+Run()
