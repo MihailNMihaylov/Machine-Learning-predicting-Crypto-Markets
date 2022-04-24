@@ -1,3 +1,9 @@
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#Run this file to compile the Neural Network model 1 (no sentiment score)
+#Run this file AFTER running the MainFunction file that gathers the necessary dataset!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 #Import necessary packages and libraries
 import numpy as np
 import subprocess
@@ -49,7 +55,7 @@ test_Scaler = MinMaxScaler(feature_range=(0, 1))
 test_Scaled = test_Scaler.fit_transform(test_Df)
 
 #Code partially inspired by Rohan Paul, “MachineLearning-DeepLearning-Code-For-My-Youtube-Channel”, 2022, Github Repository: https://github.com/rohan-paul/MachineLearning-DeepLearning-Code-for-my-YouTube-Channel
-def dataset_prep_lstm(df, look_back=5):
+def dataset_prep_lstm(df, look_back=7):
 
     dataX, dataY = [], []
 

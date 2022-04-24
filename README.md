@@ -9,3 +9,5 @@ Later the sentiment compound score is combined with the Bitcoin market statistic
 the algorithm.
 Further details explained in the code comments.
 To compile the system, run the MainFunction.py file which is going to call Run() function that is goingt to load and compile everything neccesary.
+
+

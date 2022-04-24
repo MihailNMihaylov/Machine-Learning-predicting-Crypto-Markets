@@ -1,3 +1,9 @@
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#Run this file to compile the Neural Network model 2 (using sentiment score)
+#Run this file AFTER running the MainFunction file that gathers the necessary dataset!
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+#Importing necessary packages and libraries
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler
@@ -57,7 +63,7 @@ def convert_dataset_to_ML(dataset, look_back, sentiment, sent=False):
     #print(len(dataY))
     return np.array(dataX), np.array(dataY)
 
-look_back = 5
+look_back = 7
 trainX, trainY = convert_dataset_to_ML(train, look_back, sentiment[0:train_size],sent=True)
 testX, testY = convert_dataset_to_ML(test, look_back, sentiment[train_size:len(scaled)], sent=True)
 
