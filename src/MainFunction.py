@@ -1,5 +1,10 @@
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #Run this file to compile the system
+#In the getTweets() function on line 26 change the date to current date
+#Running this file is going to take more than 1 hour !!
+#Files needed for Neural Network are already presented in the system directory
+#Run file LSTM_No_Sentiment.py to run the Neural Network model 1
+#Run file LSTM_Sentiment.py to run the Neural Network model 2
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
@@ -22,7 +27,8 @@ def get_Tweets():
     file = None
     for username in listOfUsersnames:
         print(username)
-        file = Get_tweets_by_user(username, "2017-04-18")
+        #Change the date below to current date in the same format!!!
+        file = Get_tweets_by_user(username, "2017-04-25")
 
     file.close()
     print('File closed!')
@@ -54,6 +60,7 @@ def evaluateSentimentAnalyzers():
                             "Good news and bright future is ahead of the crypto world as many millionaires choose to invest their forture in crypto"
                             "as it has the potential to double their investment in shoe time ")
 
+#Delete all files except 5DaysActualPrice before calling Run() function!!
 def Run():
     evaluateSentimentAnalyzers()
     get_BTC_Dataset()
@@ -62,4 +69,9 @@ def Run():
     combineSentimentAndBTCStats()
 
 #Function that loads and runs everything
-Run()
+#Calling function Run() below, is going to take more than 1 hour to download all tweets and perform sentiment analysis on them
+#Files are already downloaded in the directory
+#Run file LSTM_No_Sentiment.py to run the Neural Network model 1
+#Run file LSTM_Sentiment.py to run the Neural Network model 2
+
+#Run()

@@ -18,7 +18,7 @@ def sentimentResultVader(sentenceToAnalyze):
 
     print("Compound sentiment score of Vader: {:.5f}".format(sentimentScore['compound']))
 
-
+    return sentimentScore['compound']
 
 
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -10,21 +10,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="\src\DataSets\CombinedResults.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="\src\DataSets\DownloadBTC-USD.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="\src\DataSets\SentimentResult.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
